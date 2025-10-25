@@ -108,6 +108,45 @@
             pages.forEach(page => page.classList.remove('active'));
             document.getElementById(pageId).classList.add('active');
         }
+        // Add new subject/page dynamically
+        function addNewSubject() {
+            const newSubject = document.getElementById('newSubject').value.trim();
+            if (!newSubject) return alert('Please enter a subject name! 🐾');
+            const subjectId = newSubject.toLowerCase().replace(/\s+/g, '-');
+            if (document.getElementById(subjectId)) return alert('Subject already exists! 📚');
+            
+            // Add to nav
+            const nav = document.querySelector('nav');
+            const newNavLink = document.createElement('a');
+            newNavLink.textContent = newSubject;
+            newNavLink.onclick = () => showPage(subjectId);
+            nav.appendChild(newNavLink);
+            
+            // Add to home preview
+            const homeList = document.querySelector('#home ul');
+            const newLi = document.createElement('li');
+            newLi.innerHTML = `<strong>${newSubject}:</strong> Explore this new topic! 🐾 <a onclick="showPage('${subjectId}')">Learn More</a>`;
+            homeList.appendChild(newLi);
+            
+            // Create new page
+            const main = document.querySelector('main');
+            const newPage = document.createElement('div');
+            newPage.id = subjectId;
+            newPage.className = 'page';
+            newPage.innerHTML = `
+                <div class="card">
+                    <h2>What is ${newSubject}?</h2>
+                    <p>This is a new subject! Add details below. 🧠</p>
+                    <img src="https://via.placeholder.com/400x200?text=${newSubject}+Diagram" alt="Placeholder for ${newSubject}">
+                </div>
+                <button class="edit-btn" onclick="openModal('${subjectId}')">Edit This Page 🖊️</button>
+                <div id="dynamic-${subjectId}"></div>
+            `;
+            main.appendChild(newPage);
+            
+            document.getElementById('newSubject').value = '';
+            alert('New subject added! 🐶');
+        }
         // Simulate editing
         document.addEventListener('DOMContentLoaded', function() {
             showPage('home'); // Start with home
@@ -224,43 +263,4 @@
                     <li><strong>Cardiovascular System:</strong> Heart and blood vessels—pumps life like a cheerful drumbeat.</li>
                     <li><strong>Respiratory System:</strong> Lungs and airways for breathing. Essential for those deep doggy sighs.</li>
                     <li><strong>Endocrine System:</strong> Hormones regulating growth and metabolism. The body's tiny conductors.</li>
-                    <li><strong>Homeostasis:</strong> Maintaining balance, like keeping a cat's purr at the perfect temperature.</li>
-                </ul>
-            </div>
-            <div class="card">
-                <h2>Educational Resources</h2>
-                <p>Recommended: "Veterinary Physiology" by Cunningham. Online: Physiology animations on YouTube. Relate to real cases!</p>
-            </div>
-            <div class="quiz">
-                <h3>Quick Quiz! 🧠</h3>
-                <p>What maintains body balance?</p>
-                <button onclick="checkQuiz('physiology', 'homeostasis')">Homeostasis</button>
-                <button onclick="checkQuiz('physiology', 'respiration')">Respiration</button>
-            </div>
-            <button class="edit-btn" onclick="openModal('physiology')">Edit This Page 🖊️</button>
-            <div id="dynamic-physiology"></div>
-        </div>
-
-        <!-- Pharmacology Page -->
-        <div id="pharmacology" class="page">
-            <div class="card">
-                <h2>What is Pharmacology?</h2>
-                <p>Pharmacology studies drugs and their effects on animals. It's about finding the right "magic potion" for healing! Covers dosing and safety. 🧪</p>
-                <img src="https://via.placeholder.com/400x200?text=Pill+Bottle+with+Animals" alt="Cute drawing of pills and happy animals">
-            </div>
-            <div class="card">
-                <h2>Key Concepts</h2>
-                <ul>
-                    <li><strong>Pharmacokinetics:</strong> How drugs are absorbed, distributed, metabolized, and excreted. Like a drug's adventure in the body.</li>
-                    <li><strong>Pharmacodynamics:</strong> How drugs interact with targets, e.g., painkillers for aching paws.</li>
-                    <li><strong>Therapeutics:</strong> Drug use for diseases in pets, livestock, and wildlife. Tailored to species!</li>
-                    <li><strong>Side Effects:</strong> Monitoring for adverse reactions—safety first for furry friends.</li>
-                </ul>
-            </div>
-            <div class="card">
-                <h2>Educational Resources</h2>
-                <p>Recommended: "Veterinary Pharmacology" by Riviere. Online: Drug databases like VetMed. Practice calculations!</p>
-            </div>
-            <div class="quiz">
-                <h3>Quick Quiz! 🧠</h3>
-                <p>What
+                    <li><strong>Homeostasis:</strong> Maintaining balance, like keeping a cat's purr at the perfect temperature
